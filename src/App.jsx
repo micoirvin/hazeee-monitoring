@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
+import Reading from './components/Reading';
+import isThereHaze from './functions/isThereHaze';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import ExtraInfo from './components/ExtraInfo';
+import readData from './functions/readData';
+import ReadingsWrapper from './components/ReadingsWrapper';
+import Layout from './components/Layout';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [reading, setReading] = useState(Array(4));
+  const [hazeStatus, setHazeStatus] = useState(null);
+  useEffect(() => {
+    readData(1, [...reading], setReading);
+  }, []);
+
+  useEffect(() => {
+    console.log(reading);
+    const q = isThereHaze(reading);
+    setHazeStatus(q.isThereHaze);
+  }, [reading]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+      <Layout>
+        <Hero hazeStatus={hazeStatus}>
+          <ExtraInfo date={reading[0]?.created_at} />
+        </Hero>
+        <ReadingsWrapper>
+          <Reading title="Air quality" value={reading[0]?.field1} i={0} />
+
+          <Reading title="PM 2.5" value={reading[1]?.field1} i={1} />
+
+          <Reading title="Temperature" value={reading[2]?.field1} i={2} />
+
+          <Reading title="Humidity" value={reading[3]?.field1} i={3} />
+        </ReadingsWrapper>
+      </Layout>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
