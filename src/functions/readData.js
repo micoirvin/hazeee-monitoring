@@ -1,22 +1,31 @@
-export default function readData(fieldNum, reading, setReading) {
-  function read() {
-    const URL = `https://api.thingspeak.com/channels/2516468/fields/${fieldNum}.json?api_key=MJ9YULSQTETXAUMQ&results=2`;
+export default function readData(N, readings, setReadings) {
+  console.log('read');
+  const qLength = 100;
+  const URL = `https://api.thingspeak.com/channels/2516468/feeds.json?results=${qLength}`;
+  const keys = Array(N).fill(false);
+  fetch(URL)
+    .then((response) => response.json())
+    .then((data) => {
+      const last = data?.channel?.last_entry_id ?? null;
+      if (!last) read();
 
-    fetch(URL)
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the data here (e.g., log it to the console)
-        // console.log(data);
+      const feeds = data?.feeds;
+      for (let i = last; i > last - qLength; i--) {
+        const item = feeds.filter((item) => item.entry_id === i)[0];
 
-        reading[fieldNum - 1] = data.feeds[0];
-        setReading(reading);
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.error('Error fetching data:', error);
-      });
-  }
-  read();
-  const timeout = setInterval(read, 15000);
-  return () => clearInterval(timeout);
+        keys.forEach((e, i) => {
+          const fieldi = item[`field${i + 1}`];
+          if (e === false && fieldi !== null) {
+            readings[i].value = Number(fieldi);
+            readings[i].created_at = item.created_at;
+            keys[i] = true;
+          }
+        });
+      }
+
+      setReadings(readings);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
 }

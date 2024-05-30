@@ -1,43 +1,53 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import Reading from './components/Reading';
 import isThereHaze from './functions/isThereHaze';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import ExtraInfo from './components/ExtraInfo';
 import readData from './functions/readData';
-import ReadingsWrapper from './components/ReadingsWrapper';
 import Layout from './components/Layout';
+import Levels from './components/Levels';
+import Charts from './components/Charts';
+import Thresholds from './components/Thresholds';
+import ThreshLearn from './components/ThreshLearn';
+import ReadingsInfo from './components/ReadingsInfo';
+import MoreInfo from './components/MoreInfo';
+import readingsInit from './components/data/readingsInit';
 
 function App() {
-  const [reading, setReading] = useState(Array(4));
+  const [readings, setReadings] = useState(readingsInit());
   const [hazeStatus, setHazeStatus] = useState(null);
   useEffect(() => {
-    readData(1, [...reading], setReading);
+    readData(4, [...readings], setReadings);
+    setInterval(() => readData(4, [...readings], setReadings), 7000);
   }, []);
 
   useEffect(() => {
-    console.log(reading);
-    const q = isThereHaze(reading);
+    // console.log(readings);
+    const q = isThereHaze(readings);
     setHazeStatus(q.isThereHaze);
-  }, [reading]);
+  }, [readings]);
 
   return (
     <>
       <Header />
       <Layout>
-        <Hero hazeStatus={hazeStatus}>
-          <ExtraInfo date={reading[0]?.created_at} />
-        </Hero>
-        <ReadingsWrapper>
-          <Reading title="Air quality" value={reading[0]?.field1} i={0} />
+        <div>
+          <Hero hazeStatus={hazeStatus}>
+            <ReadingsInfo readings={readings} />
+          </Hero>
+          <Levels readings={readings} />
+          <ThreshLearn>
+            <Thresholds readings={readings} />
+          </ThreshLearn>
+        </div>
 
-          <Reading title="PM 2.5" value={reading[1]?.field1} i={1} />
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
+          <Charts readings={readings} />
+        </div>
 
-          <Reading title="Temperature" value={reading[2]?.field1} i={2} />
-
-          <Reading title="Humidity" value={reading[3]?.field1} i={3} />
-        </ReadingsWrapper>
+        <div className="">
+          <MoreInfo />
+        </div>
       </Layout>
     </>
   );

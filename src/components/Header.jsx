@@ -1,10 +1,9 @@
 export default function Header() {
   return (
-    <header className="border-b">
-      <div className="px-8 py-4 max-w-[96rem] mx-auto">
-        <div className="flex justify-between">
-          <div className="font-bold text-[1.5rem] leading-none">HazEEE</div>
-          <div>Quezon City</div>
+    <header className="">
+      <div className="p-4 md:p-8 max-w-[84rem] mx-auto">
+        <div className="font-bold text-[1.25rem] md:text-[1.5rem] leading-none text-blue">
+          HazEEE
         </div>
       </div>
     </header>
