@@ -10,7 +10,9 @@ export default function Levels({ readings }) {
             key={i}
           >
             <div className="font-bold text-ellipsis truncate ">{r.title}</div>
-            <div>{r.value ? r.value + ' ' + r.units : 'no reading'}</div>
+            <div>
+              {r.value !== null ? r.value + ' ' + r.units : 'no reading'}
+            </div>
             <div>{computeLevel(r)}</div>
           </div>
         );
@@ -21,7 +23,7 @@ export default function Levels({ readings }) {
 
 function computeLevel({ name, value }) {
   let level = 'unknown';
-  if (!value) return level;
+  if (value === null) return level;
   const L = levelMap();
   const levels = L[name];
   for (const k in levels) {

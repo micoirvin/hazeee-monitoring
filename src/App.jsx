@@ -14,17 +14,21 @@ import MoreInfo from './components/MoreInfo';
 import readingsInit from './components/data/readingsInit';
 
 function App() {
-  const [readings, setReadings] = useState(readingsInit());
+  const [readings, setReadings] = useState(
+    readingsInit({ actuationTesting: false })
+  );
   const [hazeStatus, setHazeStatus] = useState(null);
+  const rangeState = useState(100);
+  const [rtMode, setRtMode] = useState(false);
+
   useEffect(() => {
-    readData(4, [...readings], setReadings);
-    setInterval(() => readData(4, [...readings], setReadings), 7000);
+    readData([...readings], setReadings);
+    setInterval(() => readData([...readings], setReadings), 5000);
   }, []);
 
   useEffect(() => {
-    // console.log(readings);
     const q = isThereHaze(readings);
-    setHazeStatus(q.isThereHaze);
+    setHazeStatus(q.alert);
   }, [readings]);
 
   return (
@@ -42,7 +46,7 @@ function App() {
         </div>
 
         <div className="lg:col-start-2 lg:row-start-1 lg:row-end-3">
-          <Charts readings={readings} />
+          <Charts readings={readings} rtModer={[rtMode, setRtMode]} />
         </div>
 
         <div className="">

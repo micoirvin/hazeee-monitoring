@@ -36,16 +36,21 @@ function Content({ showDetails }) {
         showDetails ? 'mt-500' : 'mt-[-100%]'
       }`}
     >
-      <h3 className="uppercase text-blue font-bold text-center">
+      <h3 className="uppercase text-blue font-bold text-center mb-4">
         What is considered haze?
       </h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident.
+      <p className="mb-4">
+        The biggest contributor of haze is the amount of dust (particularly PM
+        2.5) in the atmosphere. When the safety threshold for PM 2.5 has been
+        exceeded, there is a signal for moderate chance of haze.
+      </p>
+      <p className="mb-4">
+        When the unsafe conditions for PM 2.5 and carbon monoxide both happen at
+        the same time, there is a signal for high chance of haze.
+      </p>
+      <p className="mb-4">
+        When the unsafe conditions for PM 2.5, carbon monoxide, and humidity all
+        happen at the same time, there is a signal for very high chance of haze.
       </p>
     </div>
   );

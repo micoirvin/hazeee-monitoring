@@ -1,18 +1,28 @@
 export default function isThereHaze(readings) {
   const threshCases = readings.map((r) =>
     isNaN(r.value) || typeof r.value !== 'number'
-      ? 0
+      ? { name: r.name, value: 0 }
       : (r.safe_thresh.max && r.value < r.safe_thresh.value) ||
         (!r.safe_thresh.max && r.value > r.safe_thresh.value)
-      ? 1
-      : -1
+      ? { name: r.name, value: 1 }
+      : { name: r.name, value: -1 }
   );
-  let safe = true;
-  threshCases.forEach((t) => {
-    if (t === -1) safe = safe && false;
-  });
+  let alert = 0;
+  if (threshCases.filter((r) => r.name === 'pm_2_5')[0].value === -1) {
+    console.log('fss');
+    alert++;
+    if (
+      threshCases.filter((r) => r.name === 'carbon_monoxide')[0].value === -1
+    ) {
+      alert++;
+      if (threshCases.filter((r) => r.name === 'humidity')[0].value === -1) {
+        alert++;
+      }
+    }
+  }
+
   return {
-    isThereHaze: !safe,
+    alert: alert,
     threshCases: threshCases,
   };
 }

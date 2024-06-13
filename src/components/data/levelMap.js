@@ -1,36 +1,23 @@
 export default function levelMap() {
   return {
     carbon_monoxide: {
-      //   safe: {
-      //     value: 0,
-      //     color: 'blue',
-      //   },
-      //   moderate: {
-      //     value: 150,
-      //     color: 'blue',
-      //   },
-      //   unhealthy: {
-      //     value: 300,
-      //     color: 'red',
-      //   },
-      //   'very unhealthy': {
-      //     value: 400,
-      //     color: 'red',
-      //   },
-      // },
-      safe: 0,
-      moderate: 150,
-      unhealthy: 300,
-      'very unhealthy': 400,
+      good: -1,
+      fair: 18,
+      'unhealthy for some groups': 38,
+      'very unhealthy': 50,
+      'acute unhealthy': 62,
+      emergency: 122,
     },
     pm_2_5: {
-      safe: 0,
-      moderate: 90,
-      unhealthy: 390,
-      'very unhealthy': 600,
+      good: -1,
+      fair: 300,
+      'unhealthy for some groups': 420,
+      'very unhealthy': 540,
+      'acute unhealthy': 660,
+      emergency: 1080,
     },
     temperature: {
-      'very cold': 0,
+      'very cold': -40,
       cold: 15,
       comfortable: 22,
       warm: 27,
@@ -38,8 +25,8 @@ export default function levelMap() {
       'dangerous heat': 35,
     },
     humidity: {
-      dry: 0,
-      normal: 40,
+      'very dry': -1,
+      'moderately dry': 50,
       humid: 70,
     },
   };
